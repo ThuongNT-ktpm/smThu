@@ -2,8 +2,11 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <title>Quà Sinh Nhật Anh Thư</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Happy Birthday</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
     <style>
       html,
       body {
@@ -43,7 +46,6 @@
 
       .text-particle,
       .image-particle {
-        white-space: nowrap;
         position: absolute;
         will-change: transform, opacity;
         user-select: none;
@@ -52,12 +54,13 @@
       }
 
       .text-particle {
+        white-space: nowrap;
+        word-break: normal;
         max-width: none;
-        word-break: break-word;
-        white-space: normal;
+        font-size: 24px;
         color: #ff92b3;
         text-shadow: 0 0 6px #fff, 0 0 12px #ffb3c9;
-        transition: transform 0.3s ease, font-size 0.3s ease;
+        transition: transform 0.3s ease;
       }
 
       .text-particle:hover {
@@ -82,14 +85,14 @@
       const galaxy = document.getElementById("galaxy");
 
       const messages = [
-        "Chúc Anh Thư sinh nhật vui vẻ💗",
-        "22 - 09 - 2005🎂",
-        "Cô bé xinh xắn❤️",
-        "Cả thế giới là của Thư🌹",
-        "Happy Birthday 🎂",
+        "Chúc Anh Thư sinh nhật vui vẻ 💗",
+        "22 - 09 - 2005 🎂",
+        "Cô bé xinh xắn ❤️",
+        "Cả thế giới là của Thư 🌹",
+        "Happy Birthday 🎉",
       ];
       const imageURLs = ["thu1.jpg"];
-      const icons = ["💗", "🎂", "🌹", "✨"];
+      const icons = ["💗", "🎂", "🌹", "✨", "🎂"];
       const maxParticles = 60;
       const activeParticles = new Set();
 
@@ -106,10 +109,7 @@
           el.textContent = isIcon
             ? icons[Math.floor(Math.random() * icons.length)]
             : messages[Math.floor(Math.random() * messages.length)];
-          const fontMin = 24,
-            fontMax = 36;
-          const fs = fontMin + Math.random() * (fontMax - fontMin);
-          el.style.fontSize = fs + "px";
+          el.style.fontSize = "24px"; // Cỡ chữ cố định
         } else {
           el.className = "image-particle";
           el.src = imageURLs[Math.floor(Math.random() * imageURLs.length)];
@@ -233,7 +233,7 @@
         });
       }
 
-      function setupMusicAndFullscreen() {
+      function setupMusic() {
         let started = false;
         document.body.addEventListener("click", () => {
           if (!started) {
@@ -242,18 +242,8 @@
             audio
               .play()
               .catch(() => console.log("Không thể phát nhạc tự động."));
+            document.body.requestFullscreen?.(); // 🆕 Full screen
             started = true;
-          }
-
-          if (!document.fullscreenElement) {
-            const elem = document.documentElement;
-            if (elem.requestFullscreen) {
-              elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) {
-              elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) {
-              elem.msRequestFullscreen();
-            }
           }
         });
       }
@@ -261,7 +251,7 @@
       window.addEventListener("DOMContentLoaded", () => {
         startStars();
         loopParticles();
-        setupMusicAndFullscreen();
+        setupMusic();
       });
     </script>
   </body>
