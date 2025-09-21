@@ -43,6 +43,7 @@
 
       .text-particle,
       .image-particle {
+        white-space: nowrap;
         position: absolute;
         will-change: transform, opacity;
         user-select: none;
@@ -51,7 +52,7 @@
       }
 
       .text-particle {
-        max-width: 180px;
+        max-width: none;
         word-break: break-word;
         white-space: normal;
         color: #ff92b3;
@@ -82,13 +83,13 @@
 
       const messages = [
         "Chúc Anh Thư sinh nhật vui vẻ💗",
-        "22 - 09 - 2005🎂 ",
+        "22 - 09 - 2005🎂",
         "Cô bé xinh xắn❤️",
         "Cả thế giới là của Thư🌹",
         "Happy Birthday 🎂",
       ];
       const imageURLs = ["thu1.jpg"];
-      const icons = ["💗", "🎂", "🌹", "✨", "🎂", "🎂", "🎂", "🎂"];
+      const icons = ["💗", "🎂", "🌹", "✨"];
       const maxParticles = 60;
       const activeParticles = new Set();
 
@@ -105,8 +106,8 @@
           el.textContent = isIcon
             ? icons[Math.floor(Math.random() * icons.length)]
             : messages[Math.floor(Math.random() * messages.length)];
-          const fontMin = 18,
-            fontMax = 25;
+          const fontMin = 24,
+            fontMax = 36;
           const fs = fontMin + Math.random() * (fontMax - fontMin);
           el.style.fontSize = fs + "px";
         } else {
@@ -120,7 +121,7 @@
 
         const startY = -50;
         const endY = window.innerHeight + 50;
-        const driftX = (Math.random() - 0.5) * 100; // lắc ngang
+        const driftX = (Math.random() - 0.5) * 100;
         const t0 = performance.now();
         const duration = 5000 + Math.random() * 3000;
 
@@ -133,7 +134,7 @@
             activeParticles.delete(el);
           } else {
             const y = startY + p * (endY - startY);
-            const x = driftX * Math.sin(p * Math.PI * 2); // di chuyển ngang sóng
+            const x = driftX * Math.sin(p * Math.PI * 2);
             const opacity = p < 0.1 ? p * 10 : p > 0.9 ? (1 - p) * 10 : 1;
             el.style.opacity = opacity;
             el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
@@ -232,7 +233,7 @@
         });
       }
 
-      function setupMusic() {
+      function setupMusicAndFullscreen() {
         let started = false;
         document.body.addEventListener("click", () => {
           if (!started) {
@@ -243,13 +244,24 @@
               .catch(() => console.log("Không thể phát nhạc tự động."));
             started = true;
           }
+
+          if (!document.fullscreenElement) {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+              elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+              elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+              elem.msRequestFullscreen();
+            }
+          }
         });
       }
 
       window.addEventListener("DOMContentLoaded", () => {
         startStars();
         loopParticles();
-        setupMusic();
+        setupMusicAndFullscreen();
       });
     </script>
   </body>
