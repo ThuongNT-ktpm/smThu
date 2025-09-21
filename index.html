@@ -2,7 +2,7 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <title>Happy Birthday</title>
+    <title>Quà Sinh Nhật Anh Thư</title>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
@@ -54,17 +54,17 @@
       }
 
       .text-particle {
-        white-space: nowrap;
+        white-space: nowrap; /* Giữ nguyên dòng không xuống dòng */
         word-break: normal;
         max-width: none;
-        font-size: 24px;
+        font-size: 28px; /* Cỡ chữ lớn rõ hơn */
         color: #ff92b3;
-        text-shadow: 0 0 6px #fff, 0 0 12px #ffb3c9;
+        text-shadow: 0 0 6px #fff, 0 0 14px #ffb3c9;
         transition: transform 0.3s ease;
       }
 
       .text-particle:hover {
-        transform: scale(1.3);
+        transform: scale(1.4);
       }
 
       .image-particle {
@@ -83,7 +83,6 @@
     <script>
       const rotatingContainer = document.getElementById("rotatingContainer");
       const galaxy = document.getElementById("galaxy");
-
       const messages = [
         "Chúc Anh Thư sinh nhật vui vẻ 💗",
         "22 - 09 - 2005 🎂",
@@ -92,8 +91,8 @@
         "Happy Birthday 🎉",
       ];
       const imageURLs = ["thu1.jpg"];
-      const icons = ["💗", "🎂", "🌹", "✨", "🎂"];
-      const maxParticles = 60;
+      const icons = ["💗", "🎂", "🌹", "✨"];
+      const maxParticles = 50;
       const activeParticles = new Set();
 
       function createParticle(type = "text") {
@@ -109,7 +108,8 @@
           el.textContent = isIcon
             ? icons[Math.floor(Math.random() * icons.length)]
             : messages[Math.floor(Math.random() * messages.length)];
-          el.style.fontSize = "24px"; // Cỡ chữ cố định
+          // font-size cố định như CSS, không random nữa để tránh co dãn
+          el.style.fontSize = "28px";
         } else {
           el.className = "image-particle";
           el.src = imageURLs[Math.floor(Math.random() * imageURLs.length)];
@@ -150,7 +150,7 @@
         function tick(t) {
           if (t - last > 500) {
             createParticle("text");
-            if (Math.random() < 0.4) createParticle("image");
+            if (Math.random() < 0.3) createParticle("image");
             last = t;
           }
           requestAnimationFrame(tick);
@@ -182,9 +182,9 @@
         const starsCount = 500;
         const positions = new Float32Array(starsCount * 3);
         for (let i = 0; i < starsCount; i++) {
-          positions[i * 3] = (Math.random() - 0.5) * 400;
-          positions[i * 3 + 1] = (Math.random() - 0.5) * 400;
-          positions[i * 3 + 2] = (Math.random() - 0.5) * 400;
+          positions[i * 3] = (Math.random() - 0.5) * 800;
+          positions[i * 3 + 1] = (Math.random() - 0.5) * 800;
+          positions[i * 3 + 2] = (Math.random() - 0.5) * 800;
         }
 
         const geometry = new THREE.BufferGeometry();
@@ -194,7 +194,7 @@
         );
         const material = new THREE.PointsMaterial({
           color: 0xffffff,
-          size: 0.5,
+          size: 1,
           transparent: true,
           depthWrite: false,
         });
@@ -233,7 +233,7 @@
         });
       }
 
-      function setupMusic() {
+      function setupMusicAndFullscreen() {
         let started = false;
         document.body.addEventListener("click", () => {
           if (!started) {
@@ -242,8 +242,16 @@
             audio
               .play()
               .catch(() => console.log("Không thể phát nhạc tự động."));
-            document.body.requestFullscreen?.(); // 🆕 Full screen
             started = true;
+          }
+          // Bật fullscreen nếu được hỗ trợ
+          const elem = document.documentElement;
+          if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+          } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+          } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
           }
         });
       }
@@ -251,7 +259,7 @@
       window.addEventListener("DOMContentLoaded", () => {
         startStars();
         loopParticles();
-        setupMusic();
+        setupMusicAndFullscreen();
       });
     </script>
   </body>
